@@ -13,6 +13,12 @@ public class UserController {
         return "login";
     }
 
+        // Exibe a página inicial (index) após login
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
+
     // Exibe a página de acesso negado
     @GetMapping("/accessDenied")
     public String getAccessDeniedPage() {

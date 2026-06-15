@@ -33,7 +33,7 @@ public class User {
     private String name;
 
     // Senha do usuario (armazenada criptografada com BCrypt)
-    @Column(name = "user-passwd")
+    @Column(name = "user_passwd")
     private String password;
 
     // Email do usuario, utilizado como Login
