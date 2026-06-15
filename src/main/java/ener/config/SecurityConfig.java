@@ -38,6 +38,8 @@ public class SecurityConfig {
                 // Rotas restritas ao Morador
                 .requestMatchers("/morador/**").hasAuthority("Morador")
 
+                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+
                 // Qualquer outra rota exige autenticação
                 .anyRequest().authenticated())
                 .formLogin(login -> login

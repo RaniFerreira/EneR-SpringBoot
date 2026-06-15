@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EneR - Login</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+
+    <div class="login-container">
+
+        <div class="login-header">
+            <div class="logo-icon">⚡</div>
+            <h1>EneR</h1>
+            <p>Gestão de Energia do Condomínio</p>
+        </div>
+
+        <!-- Mensagem de erro caso usuário/senha estejam incorretos -->
+        <div th:if="${param.error}" class="alert alert-error">
+            E-mail ou senha inválidos.
+        </div>
+
+        <!-- Mensagem após logout -->
+        <div th:if="${param.logout}" class="alert alert-success">
+            Logout realizado com sucesso.
+        </div>
+
+        <!-- Formulário de login: nomes dos campos seguem o padrão exigido pelo Spring Security -->
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label for="username">E-mail</label>
+                <input type="email" id="username" name="username" placeholder="seuemail@exemplo.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+
+        <div class="login-footer">
+            <p>Sistema de Gestão Energética Condominial</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
