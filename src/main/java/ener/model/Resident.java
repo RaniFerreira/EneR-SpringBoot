@@ -12,6 +12,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import jakarta.persistence.Transient;
+
+
 
 // Entidade que representa os dados pessoais do Morador do condomínio
 @Data
@@ -32,6 +35,10 @@ public class Resident {
     // CPF do Morador
     @Column(name = "resident_cpf", unique = true)
     private String cpf;
+
+    // Senha gerada automaticamente — exibida ao Síndico após o cadastro, não persiste no banco
+    @Transient
+    private String generatedPassword;
 
     // Data de nascimento do Morador
     @Column(name = "resident_birth_date")
@@ -61,5 +68,5 @@ public class Resident {
     // CascadeType.ALL garante que o User seja criado/removido junto com o Morador
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private Resident resident;
+    private User user;
 }
