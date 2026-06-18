@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .requestMatchers("/home", "/login").permitAll()
 
                 // Rotas restritas ao Síndico (administração: moradores, unidades, leituras, cobranças)
-                .requestMatchers("/sindico/**", "/moradores/**", "/unidades/**", "/leituras/**", "/cobrancas/**")
+                .requestMatchers("/sindico/**","/residents/**", "/moradores/**", "/unidades/**", "/leituras/**", "/cobrancas/**")
                 .hasAuthority("Sindico")
 
                 // Rotas restritas ao Morador

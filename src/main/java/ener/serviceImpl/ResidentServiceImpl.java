@@ -22,43 +22,46 @@ public class ResidentServiceImpl implements ResidentService {
     @Autowired
     private ResidentRepository residentRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+        @Autowired
+        private BCryptPasswordEncoder passwordEncoder;
 
-    // Salva o Morador e cria automaticamente o User vinculado com senha gerada
+        // saveResident — usa a senha do formulário
     @Override
-    public Integer saveResident(Resident resident) {
-
-        // Gera uma senha aleatória para o acesso do Morador ao sistema
-        String rawPassword = UUID.randomUUID().toString().substring(0, 8);
-
-        // Cria o User vinculado ao Morador com o e-mail e a senha gerada
+    public Integer saveResident(Resident resident, String plainPassword) {
         User user = new User();
         user.setName(resident.getFullName());
         user.setEmail(resident.getEmail());
-        user.setPassword(passwordEncoder.encode(rawPassword));
+        user.setPassword(passwordEncoder.encode(plainPassword));
 
-        // Atribui o papel de Morador ao User
         List<String> roles = new ArrayList<>();
         roles.add("Morador");
         user.setRoles(roles);
 
-        // Vincula o User ao Morador e persiste
         resident.setUser(user);
-
-        // Armazena a senha em texto plano temporariamente para exibir ao Síndico
-        resident.setGeneratedPassword(rawPassword);
 
         Resident saved = residentRepository.save(resident);
         return saved.getId();
     }
 
-    // Lista todos os Moradores cadastrados
+    // updateResident — atualiza email no User e senha só se preenchida
     @Override
-    public List<Resident> findAllResidents() {
-        return residentRepository.findAll();
-    }
+    public void updateResident(Resident resident, String plainPassword) {
+        Resident existing = residentRepository.findById(resident.getId())
+                .orElseThrow(() -> new RuntimeException("Morador não encontrado"));
 
+        // Mantém o User existente e atualiza email
+        User user = existing.getUser();
+        user.setName(resident.getFullName());
+        user.setEmail(resident.getEmail());
+
+        // Só atualiza a senha se o campo foi preenchido
+        if (plainPassword != null && !plainPassword.isBlank()) {
+            user.setPassword(passwordEncoder.encode(plainPassword));
+        }
+
+        resident.setUser(user);
+        residentRepository.save(resident);
+    }
     // Busca um Morador pelo id
     @Override
     public Resident findResidentById(Integer id) {
@@ -66,11 +69,13 @@ public class ResidentServiceImpl implements ResidentService {
                 .orElseThrow(() -> new RuntimeException("Morador não encontrado com o id: " + id));
     }
 
-    // Atualiza os dados de um Morador existente
+    //Lista todos os moradores
     @Override
-    public void updateResident(Resident resident) {
-        residentRepository.save(resident);
+    public List<Resident> findAllResidents() {
+        return residentRepository.findAll();
     }
+
+   
 
     // Remove o Morador e seu User vinculado do sistema
     @Override

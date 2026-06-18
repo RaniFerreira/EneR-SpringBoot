@@ -36,10 +36,6 @@ public class Resident {
     @Column(name = "resident_cpf", unique = true)
     private String cpf;
 
-    // Senha gerada automaticamente — exibida ao Síndico após o cadastro, não persiste no banco
-    @Transient
-    private String generatedPassword;
-
     // Data de nascimento do Morador
     @Column(name = "resident_birth_date")
     private LocalDate birthDate;

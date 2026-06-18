@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ener.model.Resident;
 import ener.service.ResidentService;
@@ -34,32 +35,32 @@ public class ResidentController {
         return "resident/form";
     }
 
-    // Recebe os dados do formulário e salva o novo Morador
+        // Método saveResident:
     @PostMapping("/salvar")
-    public String saveResident(@ModelAttribute Resident resident, Model model) {
-        residentService.saveResident(resident);
-        model.addAttribute("resident", resident);
-        // Exibe a senha gerada para o Síndico copiar e repassar ao Morador
-        model.addAttribute("generatedPassword", resident.getGeneratedPassword());
+    public String saveResident(@ModelAttribute Resident resident,
+                            @RequestParam String plainPassword,
+                            Model model) {
+        residentService.saveResident(resident, plainPassword);
         model.addAttribute("msg", "Morador cadastrado com sucesso!");
         return "resident/form";
     }
 
-    // Exibe o formulário de edição de um Morador existente
-    @GetMapping("/editar/{id}")
-    public String editResident(@PathVariable Integer id, Model model) {
-        model.addAttribute("resident", residentService.findResidentById(id));
-        return "resident/Form";
-    }
+            // Exibe o formulário de edição de um Morador existente
+        @GetMapping("/editar/{id}")
+        public String editResident(@PathVariable Integer id, Model model) {
+            model.addAttribute("resident", residentService.findResidentById(id));
+            return "resident/form";
+        }
 
-    // Recebe os dados do formulário e atualiza o Morador
+    // Método updateResident:
     @PostMapping("/atualizar")
-    public String updateResident(@ModelAttribute Resident resident, Model model) {
-        residentService.updateResident(resident);
+    public String updateResident(@ModelAttribute Resident resident,
+                                @RequestParam(required = false) String plainPassword,
+                                Model model) {
+        residentService.updateResident(resident, plainPassword);
         model.addAttribute("msg", "Morador atualizado com sucesso!");
         return "redirect:/residents";
     }
-
     // Remove um Morador do sistema
     @GetMapping("/excluir/{id}")
     public String deleteResident(@PathVariable Integer id) {
