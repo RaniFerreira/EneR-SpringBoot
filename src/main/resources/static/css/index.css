@@ -1,0 +1,21 @@
+body {
+    background-color: #f0faf4;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.conteudo {
+    min-height: 100vh;
+}
+
+.boas-vindas-titulo {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #1b4332;
+    letter-spacing: 2px;
+}
+
+.boas-vindas-subtitulo {
+    font-size: 1.2rem;
+    color: #52b788;
+    margin-top: 12px;
+}

@@ -1,0 +1,51 @@
+body {
+    background-color: #f0faf4;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.conteudo {
+    min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 280px;
+    min-height: 100vh;
+    background-color: #1b4332;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-titulo {
+    color: #95d5b2;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    padding: 16px 8px 8px;
+}
+
+.sidebar-link {
+    color: #d8f3dc;
+    border-radius: 8px;
+    padding: 14px 14px;
+    margin-bottom: 4px;
+    font-size: 16px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-link:hover {
+    background-color: #40916c;
+    color: #ffffff;
+}
+
+.sidebar-link.active {
+    background-color: #52b788;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.sidebar .border-top {
+    border-color: #40916c !important;
+}

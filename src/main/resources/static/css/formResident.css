@@ -1,0 +1,109 @@
+body {
+    background-color: #e8f5e9;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.conteudo {
+    min-height: 100vh;
+    padding: 24px;
+}
+
+/* ===== PAINEL PRINCIPAL ===== */
+.page-wrapper {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #b7e4c7;
+    box-shadow: 0 2px 12px rgba(45, 106, 79, 0.08);
+    min-height: calc(100vh - 48px);
+    overflow: hidden;
+}
+
+/* ===== CABEÇALHO DO PAINEL ===== */
+.page-header {
+    background-color: #f0faf4;
+    border-bottom: 1px solid #b7e4c7;
+    padding: 20px 28px;
+}
+
+.form-titulo {
+    color: #1b4332;
+    font-size: 1.4rem;
+}
+
+/* ===== CORPO DO PAINEL ===== */
+.page-body {
+    padding: 28px;
+}
+
+/* ===== SEÇÕES ===== */
+.form-section-titulo {
+    font-size: 11px;
+    font-weight: 700;
+    color: #40916c;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #d8f3dc;
+}
+
+.form-section {
+    margin-top: 24px;
+}
+
+/* ===== LABELS ===== */
+.form-label {
+    color: #2d6a4f;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+/* ===== INPUTS ===== */
+.form-control {
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    background-color: #ffffff;
+    font-size: 13px;
+    padding: 8px 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+    border-color: #40916c;
+    box-shadow: 0 0 0 0.15rem rgba(64, 145, 108, 0.2);
+}
+
+.form-control:read-only {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+.form-control::placeholder {
+    color: #c0c0c0;
+    font-size: 12px;
+}
+
+/* ===== BOTÕES ===== */
+.btn-ener {
+    background-color: #2d6a4f;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-ener:hover {
+    background-color: #1b4332;
+    color: #ffffff;
+}
+
+/* ===== RODAPÉ DO PAINEL ===== */
+.page-footer {
+    background-color: #f0faf4;
+    border-top: 1px solid #b7e4c7;
+    padding: 16px 28px;
+}
