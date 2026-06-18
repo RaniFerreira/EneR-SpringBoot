@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+
+<!-- Fragmento do Sidebar (navegação lateral) -->
+<div th:fragment="navbar" class="sidebar p-3 d-flex flex-column">
+    <h6 class="sidebar-titulo">Menu</h6>
+    <ul class="nav flex-column flex-grow-1">
+
+        <li class="nav-item">
+            <a class="nav-link sidebar-link" th:href="@{/}">
+                🏠 Início
+            </a>
+        </li>
+
+        <!-- Itens visíveis apenas para o Síndico -->
+        <li class="nav-item" sec:authorize="hasAuthority('Sindico')">
+            <a class="nav-link sidebar-link" th:href="@{/residents}">
+                👤 Moradores
+            </a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAuthority('Sindico')">
+            <a class="nav-link sidebar-link" th:href="@{/unidades}">
+                🏢 Unidades
+            </a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAuthority('Sindico')">
+            <a class="nav-link sidebar-link" th:href="@{/leituras}">
+                ⚡ Leituras
+            </a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAuthority('Sindico')">
+            <a class="nav-link sidebar-link" th:href="@{/cobrancas}">
+                💰 Cobranças
+            </a>
+        </li>
+
+        <!-- Itens visíveis apenas para o Morador -->
+        <li class="nav-item" sec:authorize="hasAuthority('Morador')">
+            <a class="nav-link sidebar-link" th:href="@{/morador/unidade}">
+                🏠 Minha Unidade
+            </a>
+        </li>
+
+    </ul>
+
+    <!-- Botão Sair no rodapé do sidebar -->
+    <div class="mt-auto pt-3 border-top border-success">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-outline-light btn-sm w-100">
+                🚪 Sair
+            </button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
