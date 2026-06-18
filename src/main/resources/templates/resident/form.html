@@ -59,8 +59,9 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Data de Nascimento</label>
-                            <input type="date" class="form-control" 
-                                th:field="*{birthDate}"
+                            <input type="date" class="form-control"
+                                id="birthDate"
+                                name="birthDate"
                                 th:value="${resident.birthDate != null} ? ${#temporals.format(resident.birthDate, 'yyyy-MM-dd')} : ''"
                                 required>
                         </div>
