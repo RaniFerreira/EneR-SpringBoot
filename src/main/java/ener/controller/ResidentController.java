@@ -14,7 +14,7 @@ import ener.service.ResidentService;
 
 // Controller responsável pelo gerenciamento de Moradores (acesso restrito ao Síndico)
 @Controller
-@RequestMapping("/sindico/moradores")
+@RequestMapping("/residents")
 public class ResidentController {
 
     @Autowired
@@ -24,14 +24,14 @@ public class ResidentController {
     @GetMapping
     public String listResidents(Model model) {
         model.addAttribute("residents", residentService.findAllResidents());
-        return "sindico/listarMoradores";
+        return "resident/list";
     }
 
     // Exibe o formulário de cadastro de novo Morador
     @GetMapping("/novo")
     public String newResident(Model model) {
         model.addAttribute("resident", new Resident());
-        return "sindico/cadastrarMorador";
+        return "resident/form";
     }
 
     // Recebe os dados do formulário e salva o novo Morador
@@ -42,14 +42,14 @@ public class ResidentController {
         // Exibe a senha gerada para o Síndico copiar e repassar ao Morador
         model.addAttribute("generatedPassword", resident.getGeneratedPassword());
         model.addAttribute("msg", "Morador cadastrado com sucesso!");
-        return "sindico/cadastrarMorador";
+        return "resident/form";
     }
 
     // Exibe o formulário de edição de um Morador existente
     @GetMapping("/editar/{id}")
     public String editResident(@PathVariable Integer id, Model model) {
         model.addAttribute("resident", residentService.findResidentById(id));
-        return "sindico/editarMorador";
+        return "resident/Form";
     }
 
     // Recebe os dados do formulário e atualiza o Morador
@@ -57,13 +57,13 @@ public class ResidentController {
     public String updateResident(@ModelAttribute Resident resident, Model model) {
         residentService.updateResident(resident);
         model.addAttribute("msg", "Morador atualizado com sucesso!");
-        return "redirect:/sindico/moradores";
+        return "redirect:/residents";
     }
 
     // Remove um Morador do sistema
     @GetMapping("/excluir/{id}")
     public String deleteResident(@PathVariable Integer id) {
         residentService.deleteResident(id);
-        return "redirect:/sindico/moradores";
+        return "redirect:/residents";
     }
 }
