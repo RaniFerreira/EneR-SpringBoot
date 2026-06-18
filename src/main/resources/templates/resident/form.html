@@ -38,19 +38,6 @@
                 <!-- Mensagem de sucesso -->
                 <div th:if="${msg}" class="alert alert-success py-2 small" th:text="${msg}"></div>
 
-                <!-- Senha gerada -->
-                <div th:if="${generatedPassword}" class="alert alert-warning py-2 d-flex align-items-center gap-3">
-                    <div>
-                        <strong>Senha gerada:</strong>
-                        <span id="senhaGerada" th:text="${generatedPassword}" class="ms-2 fw-bold font-monospace"></span>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-secondary"
-                        onclick="navigator.clipboard.writeText(document.getElementById('senhaGerada').innerText)">
-                        📋 Copiar
-                    </button>
-                    <span class="small text-muted">Repasse ao Morador. Não será exibida novamente.</span>
-                </div>
-
                 <!-- Formulário -->
                 <form th:action="${resident.id != null} ? @{/residents/atualizar} : @{/residents/salvar}"
                       th:object="${resident}" method="post">
@@ -72,7 +59,10 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Data de Nascimento</label>
-                            <input type="date" class="form-control" th:field="*{birthDate}" required>
+                            <input type="date" class="form-control" 
+                                th:field="*{birthDate}"
+                                th:value="${resident.birthDate != null} ? ${#temporals.format(resident.birthDate, 'yyyy-MM-dd')} : ''"
+                                required>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Cidade de Nascimento</label>
@@ -103,10 +93,22 @@
                             <div class="col-md-4">
                                 <label class="form-label">E-mail</label>
                                 <input type="email" class="form-control" th:field="*{email}"
-                                       placeholder="email@exemplo.com"
-                                       th:readonly="${resident.id != null}" required>
+                                       placeholder="email@exemplo.com" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Acesso ao Sistema -->
+                    <div class="form-section">
+                        <div class="form-section-titulo">Acesso ao Sistema</div>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Senha</label>
+                                <input type="password" class="form-control" name="plainPassword"
+                                       th:placeholder="${resident.id != null} ? 'Deixe em branco para manter' : 'Digite a senha'"
+                                       th:required="${resident.id == null}">
                                 <small th:if="${resident.id != null}" class="text-muted">
-                                    O e-mail não pode ser alterado após o cadastro.
+                                    Deixe em branco para manter a senha atual.
                                 </small>
                             </div>
                         </div>
