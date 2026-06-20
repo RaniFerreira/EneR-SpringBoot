@@ -15,7 +15,7 @@ import ener.service.UnitService;
 
 // Controller responsável pelo gerenciamento de Unidades (acesso restrito ao Síndico)
 @Controller
-@RequestMapping("/sindico/units")
+@RequestMapping("/units")
 public class UnitController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class UnitController {
     @GetMapping
     public String listUnits(Model model) {
         model.addAttribute("units", unitService.findAllUnits());
-        return "unit/listUnits";
+        return "unit/list";
     }
 
     // Exibe o formulário de cadastro de nova unidade
@@ -36,7 +36,7 @@ public class UnitController {
     public String newUnit(Model model) {
         model.addAttribute("unit", new Unit());
         model.addAttribute("residents", residentService.findAllResidents());
-        return "unit/Form";
+        return "unit/form";
     }
 
     // Recebe os dados do formulário e salva a nova unidade
@@ -49,9 +49,9 @@ public class UnitController {
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("unit", unit);
             model.addAttribute("residents", residentService.findAllResidents());
-            return "unit/Form";
+            return "unit/form";
         }
-        return "redirect:/sindico/units";
+        return "redirect:/units";
     }
 
     // Exibe o formulário de edição de uma unidade existente
@@ -59,20 +59,20 @@ public class UnitController {
     public String editUnit(@PathVariable Integer id, Model model) {
         model.addAttribute("unit", unitService.findUnitById(id));
         model.addAttribute("residents", residentService.findAllResidents());
-        return "unit/Form";
+        return "unit/form";
     }
 
     // Recebe os dados do formulário e atualiza a unidade
     @PostMapping("/atualizar")
     public String updateUnit(@ModelAttribute Unit unit, Model model) {
         unitService.updateUnit(unit);
-        return "redirect:/sindico/units";
+        return "redirect:/units";
     }
 
     // Remove uma unidade do sistema
     @GetMapping("/excluir/{id}")
     public String deleteUnit(@PathVariable Integer id) {
         unitService.deleteUnit(id);
-        return "redirect:/sindico/units";
+        return "redirect:/units";
     }
 }
