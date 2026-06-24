@@ -29,7 +29,7 @@
                         Preencha os dados da unidade
                     </p>
                 </div>
-                <a th:href="@{/sindico/units}" class="btn btn-outline-secondary btn-sm">
+                <a th:href="@{/units}" class="btn btn-outline-secondary btn-sm">
                     ← Voltar
                 </a>
             </div>
@@ -92,7 +92,7 @@
                         <button type="submit" class="btn btn-ener"
                                 th:text="${unit.id != null} ? 'Salvar Alterações' : 'Cadastrar'">
                         </button>
-                        <a th:href="@{/sindico/units}" class="btn btn-outline-secondary">Cancelar</a>
+                        <a th:href="@{/units}" class="btn btn-outline-secondary">Cancelar</a>
                     </div>
 
                 </form>
