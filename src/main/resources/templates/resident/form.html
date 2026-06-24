@@ -13,6 +13,8 @@
 
 <div class="d-flex">
 
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
     <!-- Conteúdo principal -->
     <div class="conteudo flex-grow-1">
         <div class="page-wrapper">
@@ -128,9 +130,7 @@
         </div>
     </div>
 
-    <!-- Sidebar direito -->
-    <div th:replace="~{fragments/navbar :: navbar}"></div>
-
+  
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
