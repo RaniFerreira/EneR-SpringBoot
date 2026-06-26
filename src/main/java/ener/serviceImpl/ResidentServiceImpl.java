@@ -76,9 +76,4 @@ public class ResidentServiceImpl implements ResidentService {
 
    
 
-    // Remove o Morador e seu User vinculado do sistema
-    @Override
-    public void deleteResident(Integer id) {
-        residentRepository.deleteById(id);
-    }
 }

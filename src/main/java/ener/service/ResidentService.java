@@ -16,6 +16,5 @@ public interface ResidentService {
     // Busca um Morador pelo id
     Resident findResidentById(Integer id);
 
-    // Remove um Morador e seu User vinculado do sistema
-    void deleteResident(Integer id);
+
 }

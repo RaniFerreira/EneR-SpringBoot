@@ -61,11 +61,6 @@
                                 <td class="text-center">
                                     <a th:href="@{/residents/editar/{id}(id=${resident.id})}"
                                        class="btn btn-sm btn-outline-success me-1">Editar</a>
-                                    <a th:href="@{/residents/excluir/{id}(id=${resident.id})}"
-                                       class="btn btn-sm btn-outline-danger"
-                                       onclick="return confirm('Tem certeza que deseja excluir este morador?')">
-                                       Excluir
-                                    </a>
                                 </td>
                             </tr>
                         </tbody>

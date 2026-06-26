@@ -61,10 +61,5 @@ public class ResidentController {
         model.addAttribute("msg", "Morador atualizado com sucesso!");
         return "redirect:/residents";
     }
-    // Remove um Morador do sistema
-    @GetMapping("/excluir/{id}")
-    public String deleteResident(@PathVariable Integer id) {
-        residentService.deleteResident(id);
-        return "redirect:/residents";
-    }
+   
 }
