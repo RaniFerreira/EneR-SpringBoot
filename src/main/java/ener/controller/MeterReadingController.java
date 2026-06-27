@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ener.model.MeterReading;
 import ener.service.MeterReadingService;
 import ener.service.UnitService;
+import java.util.List;
 
 // Controller responsável pelo gerenciamento de leituras de medidor por unidade
 @Controller
@@ -37,9 +38,18 @@ public class MeterReadingController {
     public String newReading(@PathVariable Integer unitId, Model model) {
         MeterReading reading = new MeterReading();
         reading.setUnit(unitService.findUnitById(unitId));
+
+        // Busca a leitura mais recente da unidade e pré-preenche a leitura anterior
+        List<MeterReading> readings = meterReadingService.findReadingsByUnitId(unitId);
+        if (!readings.isEmpty()) {
+            reading.setPreviousReading(readings.get(0).getCurrentReading());
+        }
+
         model.addAttribute("reading", reading);
         model.addAttribute("unit", unitService.findUnitById(unitId));
         return "reading/form";
+
+
     }
 
     // Salva a nova leitura
