@@ -60,4 +60,11 @@ public class UnitServiceImpl implements UnitService {
     public List<Unit> findUnitsByResidentId(Integer residentId) {
         return unitRepository.findByResidentsId(residentId);
     }
+
+    @Override
+    public boolean isResidentUnit(Integer unitId, Integer residentId) {
+        Unit unit = findUnitById(unitId);
+        return unit.getResidents().stream()
+                .anyMatch(r -> r.getId().equals(residentId));
+    }
 }

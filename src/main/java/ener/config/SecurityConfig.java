@@ -31,7 +31,11 @@ public class SecurityConfig {
                 // Rotas públicas (login e página inicial)
                 .requestMatchers("/home", "/login").permitAll()
 
-                // Rotas restritas ao Síndico (administração: moradores, unidades, leituras, cobranças)
+                 // Rotas do Morador
+                .requestMatchers("/units/myunit", "/units/myunit/**").hasAuthority("Morador")
+                .requestMatchers("/units/*/readings/myreading").hasAuthority("Morador")
+
+                // Rotas do Síndico
                 .requestMatchers("/residents/**").hasAuthority("Sindico")
                 .requestMatchers("/units/**").hasAuthority("Sindico")
 

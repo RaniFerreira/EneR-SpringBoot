@@ -1,6 +1,9 @@
 package ener.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import ener.model.MeterReading;
+import ener.model.Resident;
+import ener.repository.ResidentRepository;
 import ener.service.MeterReadingService;
 import ener.service.UnitService;
-import java.util.List;
 
-// Controller responsável pelo gerenciamento de leituras de medidor por unidade
 @Controller
 @RequestMapping("/units/{unitId}/readings")
 public class MeterReadingController {
@@ -25,7 +28,11 @@ public class MeterReadingController {
     @Autowired
     private UnitService unitService;
 
-    // Exibe a lista de leituras de uma unidade
+    @Autowired
+    private ResidentRepository residentRepository;
+
+    // ── Síndico ───────────────────────────────────────────────────
+
     @GetMapping
     public String listReadings(@PathVariable Integer unitId, Model model) {
         model.addAttribute("unit", unitService.findUnitById(unitId));
@@ -33,13 +40,11 @@ public class MeterReadingController {
         return "reading/list";
     }
 
-    // Exibe o formulário de nova leitura para uma unidade
     @GetMapping("/nova")
     public String newReading(@PathVariable Integer unitId, Model model) {
         MeterReading reading = new MeterReading();
         reading.setUnit(unitService.findUnitById(unitId));
 
-        // Busca a leitura mais recente da unidade e pré-preenche a leitura anterior
         List<MeterReading> readings = meterReadingService.findReadingsByUnitId(unitId);
         if (!readings.isEmpty()) {
             reading.setPreviousReading(readings.get(0).getCurrentReading());
@@ -48,11 +53,8 @@ public class MeterReadingController {
         model.addAttribute("reading", reading);
         model.addAttribute("unit", unitService.findUnitById(unitId));
         return "reading/form";
-
-
     }
 
-    // Salva a nova leitura
     @PostMapping("/salvar")
     public String saveReading(@PathVariable Integer unitId,
                               @ModelAttribute MeterReading meterReading,
@@ -62,7 +64,6 @@ public class MeterReadingController {
         return "redirect:/units/" + unitId + "/readings";
     }
 
-    // Exibe o formulário de edição de uma leitura existente
     @GetMapping("/editar/{id}")
     public String editReading(@PathVariable Integer unitId,
                               @PathVariable Integer id,
@@ -72,7 +73,6 @@ public class MeterReadingController {
         return "reading/form";
     }
 
-    // Atualiza a leitura
     @PostMapping("/atualizar")
     public String updateReading(@PathVariable Integer unitId,
                                 @ModelAttribute MeterReading meterReading,
@@ -82,11 +82,29 @@ public class MeterReadingController {
         return "redirect:/units/" + unitId + "/readings";
     }
 
-    // Remove uma leitura
     @GetMapping("/excluir/{id}")
     public String deleteReading(@PathVariable Integer unitId,
                                 @PathVariable Integer id) {
         meterReadingService.deleteMeterReading(id);
         return "redirect:/units/" + unitId + "/readings";
+    }
+
+    // ── Morador ───────────────────────────────────────────────────
+
+    @GetMapping("/myreading")
+    public String minhasLeituras(@PathVariable Integer unitId,
+                                Authentication auth,
+                                Model model) {
+        Resident resident = residentRepository
+                .findResidentByEmail(auth.getName())
+                .orElseThrow(() -> new RuntimeException("Morador não encontrado"));
+
+        if (!unitService.isResidentUnit(unitId, resident.getId())) {
+            return "redirect:/accessDenied";
+        }
+
+        model.addAttribute("unit", unitService.findUnitById(unitId));
+        model.addAttribute("readings", meterReadingService.findReadingsByUnitId(unitId));
+        return "reading/myreading";
     }
 }

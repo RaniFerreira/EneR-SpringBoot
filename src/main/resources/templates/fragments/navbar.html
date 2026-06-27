@@ -27,20 +27,16 @@
                 🏢 Unidades
             </a>
         </li>
-        <li class="nav-item" sec:authorize="hasAuthority('Sindico')">
-            <a class="nav-link sidebar-link" th:href="@{/readings}">
-                ⚡ Leituras
-            </a>
-        </li>
+        
         <li class="nav-item" sec:authorize="hasAuthority('Sindico')">
             <a class="nav-link sidebar-link" th:href="@{/cobrancas}">
                 💰 Cobranças
             </a>
         </li>
 
-        <!-- Itens visíveis apenas para o Morador -->
+         <!-- Itens visíveis apenas para o Morador -->
         <li class="nav-item" sec:authorize="hasAuthority('Morador')">
-            <a class="nav-link sidebar-link" th:href="@{/morador/unidade}">
+            <a class="nav-link sidebar-link" th:href="@{/units/myunit}">
                 🏠 Minha Unidade
             </a>
         </li>

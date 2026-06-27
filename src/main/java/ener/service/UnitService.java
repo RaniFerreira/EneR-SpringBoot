@@ -24,4 +24,6 @@ public interface UnitService {
 
     // Lista todas as unidades vinculadas a um Morador específico
     List<Unit> findUnitsByResidentId(Integer residentId);
+
+    boolean isResidentUnit(Integer unitId, Integer residentId);
 }

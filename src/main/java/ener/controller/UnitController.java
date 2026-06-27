@@ -1,6 +1,9 @@
 package ener.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ener.model.Resident;
 import ener.model.Unit;
+import ener.repository.ResidentRepository;
 import ener.service.ResidentService;
 import ener.service.UnitService;
 
-// Controller responsável pelo gerenciamento de Unidades (acesso restrito ao Síndico)
 @Controller
 @RequestMapping("/units")
 public class UnitController {
@@ -24,14 +28,18 @@ public class UnitController {
     @Autowired
     private ResidentService residentService;
 
-    // Exibe a lista de todas as unidades cadastradas
+    @Autowired
+    private ResidentRepository residentRepository;
+
+
+    // ── Síndico ───────────────────────────────────────────────────
+
     @GetMapping
     public String listUnits(Model model) {
         model.addAttribute("units", unitService.findAllUnits());
         return "unit/list";
     }
 
-    // Exibe o formulário de cadastro de nova unidade
     @GetMapping("/novo")
     public String newUnit(Model model) {
         model.addAttribute("unit", new Unit());
@@ -39,7 +47,6 @@ public class UnitController {
         return "unit/form";
     }
 
-    // Recebe os dados do formulário e salva a nova unidade
     @PostMapping("/salvar")
     public String saveUnit(@ModelAttribute Unit unit, Model model) {
         try {
@@ -54,7 +61,6 @@ public class UnitController {
         return "redirect:/units";
     }
 
-    // Exibe o formulário de edição de uma unidade existente
     @GetMapping("/editar/{id}")
     public String editUnit(@PathVariable Integer id, Model model) {
         model.addAttribute("unit", unitService.findUnitById(id));
@@ -62,17 +68,30 @@ public class UnitController {
         return "unit/form";
     }
 
-    // Recebe os dados do formulário e atualiza a unidade
     @PostMapping("/atualizar")
     public String updateUnit(@ModelAttribute Unit unit, Model model) {
         unitService.updateUnit(unit);
         return "redirect:/units";
     }
 
-    // Remove uma unidade do sistema
     @GetMapping("/excluir/{id}")
     public String deleteUnit(@PathVariable Integer id) {
         unitService.deleteUnit(id);
         return "redirect:/units";
     }
+
+    // ── Morador ───────────────────────────────────────────────────
+
+    @GetMapping("/myunit")
+    public String minhasUnidades(Authentication auth, Model model) {
+        Resident resident = residentRepository
+                .findResidentByEmail(auth.getName())
+                .orElseThrow(() -> new RuntimeException("Morador não encontrado"));
+
+        List<Unit> units = unitService.findUnitsByResidentId(resident.getId());
+        model.addAttribute("units", units);
+        return "unit/myunit";
+    }
+
+   
 }
