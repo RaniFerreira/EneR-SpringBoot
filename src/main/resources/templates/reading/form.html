@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${reading.id != null} ? 'EneR - Editar Leitura' : 'EneR - Nova Leitura'">EneR</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/formResident.css}">
+</head>
+<body>
+
+<div class="d-flex">
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="conteudo flex-grow-1">
+        <div class="page-wrapper">
+
+            <div class="page-header d-flex align-items-center justify-content-between">
+                <div>
+                    <h2 class="fw-bold form-titulo mb-0"
+                        th:text="${reading.id != null} ? '✏️ Editar Leitura' : '⚡ Nova Leitura'">
+                    </h2>
+                    <p class="text-muted mb-0" style="font-size: 12px;">
+                        Unidade <span th:text="${unit.number}"></span>
+                        — <span th:text="${unit.reference}"></span>
+                    </p>
+                </div>
+                <a th:href="@{/units/{id}/readings(id=${unit.id})}" class="btn btn-outline-secondary btn-sm">
+                    ← Voltar
+                </a>
+            </div>
+
+            <div class="page-body">
+
+                <form th:action="${reading.id != null}
+                        ? @{/units/{id}/readings/atualizar(id=${unit.id})}
+                        : @{/units/{id}/readings/salvar(id=${unit.id})}"
+                      th:object="${reading}" method="post">
+
+                    <input type="hidden" th:field="*{id}">
+
+                    <div class="form-section-titulo">Dados da Leitura</div>
+                    <div class="row g-3">
+
+                        <div class="col-md-4">
+                            <label class="form-label">Data da Leitura</label>
+                            <input type="date" class="form-control"
+                                   name="readingDate"
+                                   th:value="${reading.readingDate != null} ? ${#temporals.format(reading.readingDate, 'yyyy-MM-dd')} : ''"
+                                   required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Leitura Anterior (kWh)</label>
+                            <input type="number" step="0.01" class="form-control"
+                                   th:field="*{previousReading}"
+                                   placeholder="Deixe em branco na primeira leitura">
+                            <small class="text-muted">Deixe em branco se for a primeira leitura da unidade.</small>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Leitura Atual (kWh)</label>
+                            <input type="number" step="0.01" class="form-control"
+                                   th:field="*{currentReading}"
+                                   placeholder="Ex: 3255.00" required>
+                        </div>
+
+                    </div>
+
+                    <div class="page-footer mt-4 mx-n4 mb-n4 d-flex gap-2">
+                        <button type="submit" class="btn btn-ener"
+                                th:text="${reading.id != null} ? 'Salvar Alterações' : 'Registrar Leitura'">
+                        </button>
+                        <a th:href="@{/units/{id}/readings(id=${unit.id})}"
+                           class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -67,6 +67,8 @@
                                 <td class="text-center">
                                     <a th:href="@{/units/editar/{id}(id=${unit.id})}"
                                        class="btn btn-sm btn-outline-success me-1">Editar</a>
+                                    <a th:href="@{/units/{id}/readings(id=${unit.id})}"
+                                        class="btn btn-sm btn-outline-primary me-1">⚡ Leituras</a>
                                     <a th:href="@{/units/excluir/{id}(id=${unit.id})}"
                                        class="btn btn-sm btn-outline-danger"
                                        onclick="return confirm('Tem certeza que deseja excluir esta unidade?')">

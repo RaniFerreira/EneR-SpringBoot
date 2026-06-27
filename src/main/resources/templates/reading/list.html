@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EneR - Leituras</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/listResident.css}">
+</head>
+<body>
+
+<div class="d-flex">
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="conteudo flex-grow-1">
+        <div class="page-wrapper">
+
+            <div class="page-header d-flex align-items-center justify-content-between">
+                <div>
+                    <h2 class="fw-bold list-titulo mb-0">⚡ Leituras da Unidade</h2>
+                    <p class="text-muted mb-0" style="font-size: 12px;">
+                        Unidade <span th:text="${unit.number}"></span>
+                        — <span th:text="${unit.reference}"></span>
+                        (<span th:text="${unit.type}"></span>)
+                    </p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a th:href="@{/units}" class="btn btn-outline-secondary btn-sm">← Unidades</a>
+                    <a th:href="@{/units/{id}/readings/nova(id=${unit.id})}" class="btn btn-ener">+ Nova Leitura</a>
+                </div>
+            </div>
+
+            <div class="page-body">
+
+                <div th:if="${#lists.isEmpty(readings)}" class="alert alert-info small">
+                    Nenhuma leitura registrada para esta unidade ainda.
+                </div>
+
+                <div th:if="${not #lists.isEmpty(readings)}" class="table-responsive">
+                    <table class="table table-hover align-middle ener-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Data</th>
+                                <th>Leitura Anterior (kWh)</th>
+                                <th>Leitura Atual (kWh)</th>
+                                <th>Consumo (kWh)</th>
+                                <th class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="reading : ${readings}">
+                                <td th:text="${reading.id}"></td>
+                                <td th:text="${#temporals.format(reading.readingDate, 'dd/MM/yyyy')}"></td>
+                                <td th:text="${reading.previousReading != null} ? ${reading.previousReading} : '—'"></td>
+                                <td th:text="${reading.currentReading}"></td>
+                                <td>
+                                    <span th:if="${reading.consumption != null}"
+                                          th:text="${reading.consumption} + ' kWh'"></span>
+                                    <span th:if="${reading.consumption == null}"
+                                          class="text-muted small">Primeira leitura</span>
+                                </td>
+                                <td class="text-center">
+                                    <a th:href="@{/units/{unitId}/readings/editar/{id}(unitId=${unit.id}, id=${reading.id})}"
+                                       class="btn btn-sm btn-outline-success me-1">Editar</a>
+                                    <a th:href="@{/units/{unitId}/readings/excluir/{id}(unitId=${unit.id}, id=${reading.id})}"
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('Tem certeza que deseja excluir esta leitura?')">
+                                       Excluir
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
