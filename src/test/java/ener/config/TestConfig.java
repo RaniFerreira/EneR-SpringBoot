@@ -1,6 +1,8 @@
 package ener.config;
 
+import ener.repository.ResidentRepository;
 import ener.service.ResidentService;
+import ener.service.UnitService;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +15,16 @@ public class TestConfig {
     @Bean
     public ResidentService residentService() {
         return Mockito.mock(ResidentService.class);
+    }
+
+    @Bean
+    public UnitService unitService() {
+        return Mockito.mock(UnitService.class);
+    }
+
+    @Bean
+    public ResidentRepository residentRepository() {
+        return Mockito.mock(ResidentRepository.class);
     }
 
     @Bean
