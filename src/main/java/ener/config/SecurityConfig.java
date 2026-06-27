@@ -33,6 +33,7 @@ public class SecurityConfig {
 
                 // Rotas restritas ao Síndico (administração: moradores, unidades, leituras, cobranças)
                 .requestMatchers("/residents/**").hasAuthority("Sindico")
+                .requestMatchers("/units/**").hasAuthority("Sindico")
 
                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 
