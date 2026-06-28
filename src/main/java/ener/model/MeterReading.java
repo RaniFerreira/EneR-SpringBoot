@@ -47,6 +47,8 @@ public class MeterReading {
     @JoinColumn(name = "unit_id")
     private Unit unit;
 
+    
+
     // Calcula o consumo automaticamente antes de salvar ou atualizar
     @PrePersist
     @PreUpdate

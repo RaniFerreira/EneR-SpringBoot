@@ -12,7 +12,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
-
+ import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 // Entidade que representa uma unidade (casa, apartamento ou lote) do condomínio
 @Data
 @Entity
@@ -36,6 +37,12 @@ public class Unit {
     // Referência adicional da unidade (ex: bloco, rua, quadra)
     @Column(name = "unit_reference")
     private String reference;
+
+   
+
+    // Lista de leituras de medidor desta unidade
+    @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL)
+    private List<MeterReading> readings;
 
     // Lista de Moradores responsáveis pela unidade (pode ter mais de um)
     // Tabela de junção: unit_residents
