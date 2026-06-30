@@ -1,6 +1,7 @@
 package ener.config;
 
 import ener.repository.ResidentRepository;
+import ener.service.CondoFeeService;
 import ener.service.MeterReadingService;
 import ener.service.ResidentService;
 import ener.service.UnitService;
@@ -26,6 +27,11 @@ public class TestConfig {
     @Bean
     public MeterReadingService meterReadingService() {
         return Mockito.mock(MeterReadingService.class);
+    }
+
+    @Bean
+    public CondoFeeService condoFeeService() {
+        return Mockito.mock(CondoFeeService.class);
     }
 
     @Bean
