@@ -53,4 +53,7 @@ public class Unit {
         inverseJoinColumns = @JoinColumn(name = "resident_id")
     )
     private List<Resident> residents;
+
+    @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL)
+    private List<CondoFee> fees;
 }
