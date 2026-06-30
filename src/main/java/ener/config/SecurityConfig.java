@@ -38,6 +38,7 @@ public class SecurityConfig {
                 // Rotas do Síndico
                 .requestMatchers("/residents/**").hasAuthority("Sindico")
                 .requestMatchers("/units/**").hasAuthority("Sindico")
+                .requestMatchers("/fees/**").hasAuthority("Sindico")
 
                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 
