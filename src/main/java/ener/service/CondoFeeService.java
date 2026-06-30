@@ -7,11 +7,11 @@ import ener.model.CondoFee;
 // Interface que define o contrato da camada de serviço para taxas de condomínio
 public interface CondoFeeService {
 
-    // Salva uma nova taxa
+    // Salva uma nova taxa (cadastro independente, sem vínculo com unidade)
     Integer saveCondoFee(CondoFee condoFee);
 
-    // Lista todas as taxas aplicadas a uma unidade específica
-    List<CondoFee> findFeesByUnitId(Integer unitId);
+    // Lista todas as taxas cadastradas
+    List<CondoFee> findAllFees();
 
     // Busca uma taxa pelo id
     CondoFee findCondoFeeById(Integer id);
@@ -24,4 +24,10 @@ public interface CondoFeeService {
 
     // Altera o status da taxa (Ativa/Inativa)
     void toggleStatus(Integer id);
+
+    // Vincula uma taxa a uma unidade
+    void linkFeeToUnit(Integer feeId, Integer unitId);
+
+    // Remove o vínculo de uma taxa com uma unidade
+    void unlinkFeeFromUnit(Integer feeId, Integer unitId);
 }

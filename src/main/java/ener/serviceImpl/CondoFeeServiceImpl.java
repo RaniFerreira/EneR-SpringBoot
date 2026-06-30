@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import ener.model.CondoFee;
 import ener.model.CondoFee.FeeStatus;
+import ener.model.Unit;
 import ener.repository.CondoFeeRepository;
+import ener.repository.UnitRepository;
 import ener.service.CondoFeeService;
 
 // Implementação da camada de serviço de taxas de condomínio
@@ -17,6 +19,9 @@ public class CondoFeeServiceImpl implements CondoFeeService {
     @Autowired
     private CondoFeeRepository condoFeeRepository;
 
+    @Autowired
+    private UnitRepository unitRepository;
+
     // Salva uma nova taxa (data de criação e status padrão definidos via @PrePersist)
     @Override
     public Integer saveCondoFee(CondoFee condoFee) {
@@ -24,10 +29,10 @@ public class CondoFeeServiceImpl implements CondoFeeService {
         return saved.getId();
     }
 
-    // Lista todas as taxas de uma unidade específica
+    // Lista todas as taxas cadastradas
     @Override
-    public List<CondoFee> findFeesByUnitId(Integer unitId) {
-        return condoFeeRepository.findByUnitId(unitId);
+    public List<CondoFee> findAllFees() {
+        return condoFeeRepository.findAll();
     }
 
     // Busca uma taxa pelo id
@@ -55,5 +60,33 @@ public class CondoFeeServiceImpl implements CondoFeeService {
         CondoFee fee = findCondoFeeById(id);
         fee.setStatus(fee.getStatus() == FeeStatus.ATIVA ? FeeStatus.INATIVA : FeeStatus.ATIVA);
         condoFeeRepository.save(fee);
+    }
+
+    // Vincula uma taxa já cadastrada a uma unidade
+    @Override
+    public void linkFeeToUnit(Integer feeId, Integer unitId) {
+        CondoFee fee = findCondoFeeById(feeId);
+        Unit unit = unitRepository.findById(unitId)
+                .orElseThrow(() -> new RuntimeException("Unidade não encontrada com o id: " + unitId));
+
+        if (unit.getFees() == null) {
+            unit.setFees(new java.util.ArrayList<>());
+        }
+        if (!unit.getFees().contains(fee)) {
+            unit.getFees().add(fee);
+        }
+        unitRepository.save(unit);
+    }
+
+    // Remove o vínculo de uma taxa com uma unidade
+    @Override
+    public void unlinkFeeFromUnit(Integer feeId, Integer unitId) {
+        Unit unit = unitRepository.findById(unitId)
+                .orElseThrow(() -> new RuntimeException("Unidade não encontrada com o id: " + unitId));
+
+        if (unit.getFees() != null) {
+            unit.getFees().removeIf(f -> f.getId().equals(feeId));
+            unitRepository.save(unit);
+        }
     }
 }

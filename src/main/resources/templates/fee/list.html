@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EneR - Taxas de Condomínio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/formResident.css}">
+</head>
+<body>
+
+<div class="d-flex">
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Conteúdo principal -->
+    <div class="conteudo flex-grow-1">
+        <div class="page-wrapper">
+
+            <!-- Cabeçalho do painel -->
+            <div class="page-header d-flex align-items-center justify-content-between">
+                <div>
+                    <h2 class="fw-bold form-titulo mb-0">💰 Taxas de Condomínio</h2>
+                    <p class="text-muted mb-0" style="font-size: 12px;">
+                        Cadastre e vincule taxas às unidades
+                    </p>
+                </div>
+                <a th:href="@{/fees/novo}" class="btn btn-ener btn-sm">
+                    + Cadastrar Taxa
+                </a>
+            </div>
+
+            <!-- Corpo do painel -->
+            <div class="page-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Data Criação</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="fee : ${fees}">
+                            <td th:text="${fee.type}"></td>
+                            <td th:text="${fee.description}"></td>
+                            <td th:text="'R$ ' + ${fee.amount}"></td>
+                            <td th:text="${#temporals.format(fee.createdAt, 'dd/MM/yyyy')}"></td>
+                            <td>
+                                <span th:class="${fee.status.name() == 'ATIVA'} ? 'badge bg-success' : 'badge bg-secondary'"
+                                      th:text="${fee.status.name() == 'ATIVA'} ? 'Ativa' : 'Inativa'">
+                                </span>
+                            </td>
+                            <td>
+                                <a th:href="@{/fees/{id}/vincular(id=${fee.id})}"
+                                   class="btn btn-sm btn-outline-success">Vincular Unidades</a>
+                                <a th:href="@{/fees/editar/{id}(id=${fee.id})}"
+                                   class="btn btn-sm btn-outline-primary">Editar</a>
+                                <a th:href="@{/fees/status/{id}(id=${fee.id})}"
+                                   class="btn btn-sm btn-outline-warning">Alternar Status</a>
+                                <a th:href="@{/fees/excluir/{id}(id=${fee.id})}"
+                                   class="btn btn-sm btn-outline-danger">Excluir</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${fees.isEmpty()}">
+                            <td colspan="6" class="text-center text-muted">Nenhuma taxa cadastrada.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

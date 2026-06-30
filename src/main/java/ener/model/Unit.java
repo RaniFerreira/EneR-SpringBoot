@@ -54,6 +54,15 @@ public class Unit {
     )
     private List<Resident> residents;
 
-    @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL)
+     @ManyToMany
+    @JoinTable(
+        name = "unit_fees",
+        joinColumns = @JoinColumn(name = "unit_id"),
+        inverseJoinColumns = @JoinColumn(name = "fee_id")
+    )
     private List<CondoFee> fees;
+
+    
+
+  
 }

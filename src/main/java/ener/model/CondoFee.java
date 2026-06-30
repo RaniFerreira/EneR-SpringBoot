@@ -1,6 +1,7 @@
 package ener.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,15 +10,15 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-// Entidade que representa uma taxa de condomínio aplicada a uma unidade
+// Entidade que representa uma taxa de condomínio, cadastrada de forma independente
+// e posteriormente vinculada a uma ou mais unidades
 @Data
 @Entity
 @Table(name = "condo_fees")
@@ -43,7 +44,7 @@ public class CondoFee {
     @Column(name = "fee_amount", nullable = false)
     private Double amount;
 
-    // Data em que a taxa foi criada/aplicada
+    // Data em que a taxa foi criada
     @Column(name = "fee_created_at")
     private LocalDate createdAt;
 
@@ -52,10 +53,10 @@ public class CondoFee {
     @Column(name = "fee_status", nullable = false)
     private FeeStatus status;
 
-    // Unidade à qual esta taxa pertence
-    @ManyToOne
-    @JoinColumn(name = "unit_id", nullable = false)
-    private Unit unit;
+    // Unidades às quais esta taxa está vinculada
+    // Tabela de junção: unit_fees
+    @ManyToMany(mappedBy = "fees")
+    private List<Unit> units;
 
     // Define a data de criação automaticamente e o status padrão como Ativa
     @PrePersist
