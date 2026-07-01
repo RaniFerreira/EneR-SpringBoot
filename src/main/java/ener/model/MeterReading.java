@@ -13,6 +13,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 // Entidade que representa a leitura mensal do medidor de energia de uma unidade
 @Data
@@ -43,6 +44,7 @@ public class MeterReading {
     private Double consumption;
 
     // Unidade à qual esta leitura pertence
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "unit_id")
     private Unit unit;
@@ -50,6 +52,7 @@ public class MeterReading {
     
 
     // Calcula o consumo automaticamente antes de salvar ou atualizar
+    
     @PrePersist
     @PreUpdate
         public void calculateConsumption() {

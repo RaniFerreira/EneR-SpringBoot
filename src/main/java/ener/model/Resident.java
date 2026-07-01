@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -66,11 +67,13 @@ public class Resident {
 
     // Vínculo com o User do sistema — criado automaticamente no cadastro do Morador
     // CascadeType.ALL garante que o User seja criado/removido junto com o Morador
+    @ToString.Exclude
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-        // Unidades vinculadas a este Morador
+    // Unidades vinculadas a este Morador
+    @ToString.Exclude
     @ManyToMany(mappedBy = "residents")
     private List<Unit> units;
 }

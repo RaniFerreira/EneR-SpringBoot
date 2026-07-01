@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ener.model.CondoFee;
 import ener.model.CondoFee.FeeStatus;
@@ -48,9 +49,17 @@ public class CondoFeeServiceImpl implements CondoFeeService {
         condoFeeRepository.save(condoFee);
     }
 
-    // Remove uma taxa pelo id
+    // Remove uma taxa pelo id, desfazendo antes os vínculos com unidades
     @Override
+    @Transactional
     public void deleteCondoFee(Integer id) {
+        CondoFee fee = findCondoFeeById(id);
+
+        // Remove o vínculo desta taxa em todas as unidades associadas
+        for (Unit unit : fee.getUnits()) {
+            unit.getFees().remove(fee);
+        }
+
         condoFeeRepository.deleteById(id);
     }
 

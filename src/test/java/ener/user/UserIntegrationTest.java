@@ -29,6 +29,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class UserIntegrationTest {
 
+    
     @Autowired
     private IUserService userService;
 

@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 
 // Entidade que representa uma taxa de condomínio, cadastrada de forma independente
 // e posteriormente vinculada a uma ou mais unidades
@@ -55,6 +56,7 @@ public class CondoFee {
 
     // Unidades às quais esta taxa está vinculada
     // Tabela de junção: unit_fees
+    @ToString.Exclude
     @ManyToMany(mappedBy = "fees")
     private List<Unit> units;
 
